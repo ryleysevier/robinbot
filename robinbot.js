@@ -1,9 +1,10 @@
 // ==UserScript==
-// @name         ColorFinder
+// @name         RobinBot
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      1.0
 // @description  try to take over the world!
 // @author       AceHax
+// @update       https://github.com/ryleysevier/robinbot/blob/master/robinbot.js
 // @match        http://tampermonkey.net/index.php?version=4.0&ext=dhdg&updated=true
 // @include      https://www.reddit.com/robin*
 // @grant   GM_getValue
@@ -11,8 +12,8 @@
 // ==/UserScript==
 $( document ).ready(function(){
     setTimeout(function(){$(".robin--vote-class--increase").click();
-    $(".c-form-control").val("I'm running RobinBot, type #color to see your color!");
-    $(".c-form-control").submit();}, 10000);
+        $(".c-form-control").val("I'm running RobinBot, type #color to see your color!");
+        $(".c-form-control").submit();}, 10000);
 });
 
 var currentMessage = $(".robin-message").last().find("span.robin-message--message").text();
@@ -22,10 +23,11 @@ var outputQueue = [""];
 var postColors = "#color : ";
 var colorsToPost = [];
 
-var redhp=1000;
-var bluehp=1000;
-var colorwar = {whitegold:[],
-    blueblack:[]
+var periwinklehp=1000;
+var orangeredhp=1000;
+var colorwar = {
+        periwinkle:[],
+        orangered:[]
 };
 
 var colorPost = false;
@@ -45,47 +47,47 @@ setInterval(function(){
         console.log(lastMessageUser);
         console.log(x);
 
-        if (x.toLowerCase()=="#shootred"){
-            if ($.inArray(lastMessageUser, colorwar.blackblue)){
-                redhp-=1;   
-            }
-        }
-        
-        if (x.toLowerCase()=="#shootblue"){
-            if ($.inArray(lastMessageUser, colorwar.whitegold)){
-                bluehp-=1;   
-            }
-        }
-        
-        if (x.toLowerCase()=="#hpreport"){
-            $(".c-form-control").val("Here are the HP reports of the color teams: Red Team:" + redhp + " Blue Team: " + bluehp);
-            $(".c-form-control").submit();
-        }
-        
-        if(x.toLowerCase()=="#joinred" || x.toLowerCase() == "#joingoldwhite" ){
-            var inwhitegold =$.inArray(lastMessageUser, colorwar.whitegold);
-            
-            var inblackblue = $.inArray(lastMessageUser, colorwar.blackblue);
-            console.log(inwhitegold);
-            console.log(inblackblue);
-            if(inwhitegold < 0 && inblackblue < 0){
-                colorwar.whitegold.push(lastMessageUser);
-                console.log(lastMessageUser + " joined red.");
-                redhp+=100;
+        if (x.toLowerCase()=="#shootperiwinkle"){
+            if ($.inArray(lastMessageUser, colorwar.periwinkle)){
+                periwinklehp-=1;
             }
         }
 
-        if(x.toLowerCase()=="#joinblue" || x.toLowerCase() == "#joinblueblack" ){
-            var inwhitegold1 =$.inArray(lastMessageUser, colorwar.whitegold);
-            var inblackblue1 = $.inArray(lastMessageUser, colorwar.blackblue);
-            
-            console.log(inwhitegold1);
-            console.log(inblackblue1);
-            
-            if(inwhitegold1 < 0 && inblackblue1 < 0){
-                colorwar.blueblack.push(lastMessageUser);
-                console.log(lastMessageUser + " joined blueb.");
-                bluehp+=100;
+        if (x.toLowerCase()=="#shootorangered"){
+            if ($.inArray(lastMessageUser, colorwar.periwinkle)){
+                orangeredhp-=1;
+            }
+        }
+
+        if (x.toLowerCase()=="#hpreport"){
+            $(".c-form-control").val("Here are the HP reports of the color teams: periwinkle Team:" + periwinklehp + " orangered Team: " + orangeredhp);
+            $(".c-form-control").submit();
+        }
+
+        if(x.toLowerCase()=="#joinperiwinkle" || x.toLowerCase() == "#joinperiwinkle" ){
+            var inperiwinkle =$.inArray(lastMessageUser, colorwar.periwinkle);
+
+            var inorangered = $.inArray(lastMessageUser, colorwar.orangered);
+            console.log(orangered);
+            console.log(inperiwinkle);
+            if(inorangered < 0 && inperiwinkle < 0){
+                colorwar.periwinkle.push(lastMessageUser);
+                console.log(lastMessageUser + " joined periwinkle.");
+                periwinklehp+=10;
+            }
+        }
+
+        if(x.toLowerCase()=="#joinorangered" || x.toLowerCase() == "#joinorangered" ){
+            var inorangered1 =$.inArray(lastMessageUser, colorwar.orangered);
+            var inperiwinkle1 = $.inArray(lastMessageUser, colorwar.periwinkle);
+
+            console.log(inorangered1);
+            console.log(inperiwinkle1);
+
+            if(orangered1 < 0 && inperiwinkle1 < 0){
+                colorwar.orangered.push(lastMessageUser);
+                console.log(lastMessageUser + " joined orangered.");
+                orangeredhp+=10;
             }
         }
 
@@ -97,7 +99,7 @@ setInterval(function(){
         if(x.toLowerCase()=="#colorcount"){
             colorCountPost = true;
         }
-        
+
         if(x.toLowerCase()=="#color" || x.toLowerCase()=="#colour"){
             console.log("color command go!");
 
@@ -148,9 +150,9 @@ setInterval(function(){
 
 setInterval(function(){
     if(colorCountPost){
-        var blueblackteam = "Blue Team: " + colorwar.blueblack.length + ". ";
-        var whitegoldteam = "Red Team: " + colorwar.whitegold.length + ". ";
-        $(".c-form-control").val("#joinred - #joinblue: " + blueblackteam + whitegoldteam);
+        var orangeredteam = "orangered Team: " + colorwar.orangered.length + ". ";
+        var periwinkleteam = "periwinkle Team: " + colorwar.periwinkle.length + ". ";
+        $(".c-form-control").val("#joinperiwinkle - #joinorangered: " + orangeredteam + periwinkleteam);
         $(".c-form-control").submit();
         colorCountPost = false;
     }
@@ -158,9 +160,9 @@ setInterval(function(){
 
 setInterval(function(){
     if(colorPost){
-        var blueblackteam = "Blue Team: " + colorwar.blueblack.toString() + ". ";
-        var whitegoldteam = "Red Team: " + colorwar.whitegold.toString() + ". ";
-        $(".c-form-control").val("Here are the members of the color war: " + blueblackteam + whitegoldteam);
+        var orangeredteam = "orangered Team: " + colorwar.orangered.toString() + ". ";
+        var periwinkleteam = "periwinkle Team: " + colorwar.periwinkle.toString() + ". ";
+        $(".c-form-control").val("Here are the members of the color war: " + orangeredteam + periwinkleteam);
         $(".c-form-control").submit();
         colorPost = false;
     }
